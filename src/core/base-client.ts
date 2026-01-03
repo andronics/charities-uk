@@ -1,6 +1,6 @@
 import { LRUCache } from 'lru-cache';
 import { httpRequest, type HttpRequestOptions, type HttpResponse } from '../utils/http.js';
-import type { Charity, Regulator } from '../types/charity.js';
+import type { Charity, Regulator, Trustee, FinancialYear, OtherRegulatorInfo } from '../types/charity.js';
 import type { SearchQuery, SearchResult, ClientConfig, CacheConfig } from '../types/search.js';
 import {
   CharityNotFoundError,
@@ -96,6 +96,37 @@ export abstract class BaseClient {
    * Returns null if not found.
    */
   abstract getCharity(id: string): Promise<Charity | null>;
+
+  /**
+   * Search for charities by name.
+   * Returns empty results if not supported by regulator.
+   */
+  abstract searchByName(name: string, page?: number): Promise<SearchResult<Charity>>;
+
+  /**
+   * Get trustees for a charity.
+   * Returns empty array if not supported by regulator.
+   */
+  abstract getTrustees(id: string): Promise<Trustee[]>;
+
+  /**
+   * Get financial history for a charity.
+   * Returns empty array if not supported by regulator.
+   */
+  abstract getFinancialHistory(id: string): Promise<FinancialYear[]>;
+
+  /**
+   * Get other regulators where the charity is registered.
+   * Returns empty array if not supported by regulator.
+   */
+  abstract getOtherRegulators(id: string): Promise<OtherRegulatorInfo[]>;
+
+  /**
+   * Log a warning that a method is not implemented for this regulator.
+   */
+  protected logNotImplemented(method: string): void {
+    console.warn(`[${this.regulator}] ${method} is not supported by this regulator's API`);
+  }
 
   /**
    * Make an HTTP request with retry and error handling.

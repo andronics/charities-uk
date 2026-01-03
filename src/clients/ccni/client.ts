@@ -1,5 +1,5 @@
 import { BaseClient } from '../../core/base-client.js';
-import type { Charity, Trustee, Regulator } from '../../types/charity.js';
+import type { Charity, Trustee, FinancialYear, OtherRegulatorInfo, Regulator } from '../../types/charity.js';
 import type { SearchQuery, SearchResult, ClientConfig } from '../../types/search.js';
 import type { CCNISearchResponse, CCNICharityDetails } from '../../types/raw/ccni.js';
 import { transformDetails, transformSearchResponse, transformTrustees } from './transform.js';
@@ -168,6 +168,17 @@ export class CCNIClient extends BaseClient {
   }
 
   /**
+   * Search for charities by name.
+   *
+   * @param name - Charity name to search for
+   * @param page - Page number (1-indexed, default: 1)
+   * @returns Paginated search results
+   */
+  async searchByName(name: string, page = 1): Promise<SearchResult<Charity>> {
+    return this.search({ text: name, page });
+  }
+
+  /**
    * Get trustees for a charity.
    *
    * @param id - Charity registration number (with or without NIC prefix)
@@ -182,5 +193,50 @@ export class CCNIClient extends BaseClient {
 
     const raw = charity._raw as CCNICharityDetails;
     return transformTrustees(raw.trusteesList ?? []);
+  }
+
+  /**
+   * Get financial history for a charity.
+   *
+   * NOTE: CCNI API only provides current year financial data.
+   * This method returns an array with a single entry for the most recent year.
+   *
+   * @param id - Charity registration number (with or without NIC prefix)
+   * @returns Array containing current year financials only
+   */
+  async getFinancialHistory(id: string): Promise<FinancialYear[]> {
+    const charity = await this.getCharity(id);
+
+    if (!charity) {
+      return [];
+    }
+
+    const raw = charity._raw as CCNICharityDetails;
+
+    // CCNI only provides current year data
+    if (!raw.dateFinancialYearEnd) {
+      return [];
+    }
+
+    return [
+      {
+        yearEnd: new Date(raw.dateFinancialYearEnd),
+        income: raw.income ?? 0,
+        expenditure: raw.totalExpenditure ?? 0,
+      },
+    ];
+  }
+
+  /**
+   * Get other regulators where the charity is registered.
+   *
+   * NOTE: CCNI API does not provide cross-regulator information.
+   *
+   * @param _id - Charity registration number (unused)
+   * @returns Empty array (not supported)
+   */
+  async getOtherRegulators(_id: string): Promise<OtherRegulatorInfo[]> {
+    this.logNotImplemented('getOtherRegulators');
+    return [];
   }
 }

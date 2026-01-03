@@ -1,5 +1,5 @@
 import { BaseClient } from '../../core/base-client.js';
-import type { Charity, FinancialYear, Regulator } from '../../types/charity.js';
+import type { Charity, FinancialYear, Trustee, OtherRegulatorInfo, Regulator } from '../../types/charity.js';
 import type { SearchQuery, SearchResult, ClientConfig } from '../../types/search.js';
 import type { OSCRAllCharitiesResponse, OSCRAnnualReturn, OSCRCharity } from '../../types/raw/oscr.js';
 import {
@@ -76,6 +76,33 @@ export class OSCRClient extends BaseClient {
   }
 
   /**
+   * Search for charities by name.
+   *
+   * NOTE: OSCR API does not support text search.
+   *
+   * @param _name - Charity name (unused)
+   * @param _page - Page number (unused)
+   * @returns Empty results (not supported)
+   */
+  async searchByName(_name: string, _page = 1): Promise<SearchResult<Charity>> {
+    this.logNotImplemented('searchByName');
+    return { items: [], total: 0, page: _page, pageSize: 0, totalPages: 0 };
+  }
+
+  /**
+   * Get trustees for a charity.
+   *
+   * NOTE: OSCR API does not provide trustee information.
+   *
+   * @param _id - Charity registration number (unused)
+   * @returns Empty array (not supported)
+   */
+  async getTrustees(_id: string): Promise<Trustee[]> {
+    this.logNotImplemented('getTrustees');
+    return [];
+  }
+
+  /**
    * Get a charity by its Scottish charity number.
    *
    * @param id - Scottish charity number (e.g., 'SC000001')
@@ -130,6 +157,29 @@ export class OSCRClient extends BaseClient {
     }
 
     return charity;
+  }
+
+  /**
+   * Get financial history for a charity.
+   *
+   * @param id - Scottish charity number (e.g., 'SC000001')
+   * @returns Array of financial years from annual returns
+   */
+  async getFinancialHistory(id: string): Promise<FinancialYear[]> {
+    return this.getAnnualReturns(id);
+  }
+
+  /**
+   * Get other regulators where the charity is registered.
+   *
+   * NOTE: OSCR API does not provide cross-regulator information.
+   *
+   * @param _id - Charity registration number (unused)
+   * @returns Empty array (not supported)
+   */
+  async getOtherRegulators(_id: string): Promise<OtherRegulatorInfo[]> {
+    this.logNotImplemented('getOtherRegulators');
+    return [];
   }
 
   /**

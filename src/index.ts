@@ -25,12 +25,14 @@ export type {
   Charity,
   Trustee,
   FinancialYear,
+  OtherRegulatorInfo,
   // Search types
   SearchQuery,
   SearchResult,
   SearchAggregations,
   AggregationBucket,
   ClientConfig,
+  CacheConfig,
 } from './types/index.js';
 
 // Raw API types (for advanced users)

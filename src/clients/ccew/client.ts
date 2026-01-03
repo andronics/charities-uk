@@ -1,5 +1,5 @@
 import { BaseClient } from '../../core/base-client.js';
-import type { Charity, Trustee, FinancialYear, Regulator } from '../../types/charity.js';
+import type { Charity, Trustee, FinancialYear, OtherRegulatorInfo, Regulator } from '../../types/charity.js';
 import type { SearchQuery, SearchResult, ClientConfig } from '../../types/search.js';
 import type {
   CCEWSearchResponse,
@@ -258,7 +258,7 @@ export class CCEWClient extends BaseClient {
    * @param id - Charity registration number
    * @returns Array of other regulators with registration numbers
    */
-  async getOtherRegulators(id: string): Promise<{ regulatorName: string; registrationNumber: string }[]> {
+  async getOtherRegulators(id: string): Promise<OtherRegulatorInfo[]> {
     const regNumber = id.replace(/\D/g, '');
 
     try {
@@ -270,9 +270,28 @@ export class CCEWClient extends BaseClient {
         `/allcharitydetails/GetCharityOtherRegulators${queryString}`
       );
 
-      return response.data.otherRegulators ?? [];
+      // Map to OtherRegulatorInfo format
+      return (response.data.otherRegulators ?? []).map((reg) => ({
+        regulator: this.mapRegulatorName(reg.regulatorName),
+        registrationNumber: reg.registrationNumber,
+      }));
     } catch {
       return [];
     }
+  }
+
+  /**
+   * Map regulator name from CCEW API to Regulator type.
+   */
+  private mapRegulatorName(name: string): Regulator {
+    const normalized = name.toLowerCase();
+    if (normalized.includes('scotland') || normalized.includes('oscr')) {
+      return 'OSCR';
+    }
+    if (normalized.includes('northern ireland') || normalized.includes('ccni')) {
+      return 'CCNI';
+    }
+    // Default to CCEW if unknown
+    return 'CCEW';
   }
 }

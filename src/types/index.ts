@@ -5,6 +5,7 @@ export type {
   Charity,
   Trustee,
   FinancialYear,
+  OtherRegulatorInfo,
 } from './charity.js';
 
 // Search types
@@ -14,6 +15,7 @@ export type {
   SearchAggregations,
   AggregationBucket,
   ClientConfig,
+  CacheConfig,
 } from './search.js';
 
 // Raw API types

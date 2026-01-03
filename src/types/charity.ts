@@ -120,3 +120,15 @@ export interface FinancialYear {
   /** Total expenditure for the year */
   expenditure: number;
 }
+
+/**
+ * Information about registration with another regulator.
+ */
+export interface OtherRegulatorInfo {
+  /** The other regulator */
+  regulator: Regulator;
+  /** Registration number with that regulator */
+  registrationNumber: string;
+  /** Charity name as registered there (if different) */
+  charityName?: string;
+}
