@@ -1,6 +1,7 @@
+import { LRUCache } from 'lru-cache';
 import { httpRequest, type HttpRequestOptions, type HttpResponse } from '../utils/http.js';
 import type { Charity, Regulator } from '../types/charity.js';
-import type { SearchQuery, SearchResult, ClientConfig } from '../types/search.js';
+import type { SearchQuery, SearchResult, ClientConfig, CacheConfig } from '../types/search.js';
 import {
   CharityNotFoundError,
   RateLimitError,
@@ -9,9 +10,18 @@ import {
 } from './errors.js';
 
 /**
+ * Default cache configuration.
+ */
+const DEFAULT_CACHE_CONFIG: Required<CacheConfig> = {
+  enabled: true,
+  ttl: 5 * 60 * 1000, // 5 minutes
+  maxSize: 100,
+};
+
+/**
  * Default client configuration.
  */
-const DEFAULT_CONFIG: Required<Omit<ClientConfig, 'apiKey'>> = {
+const DEFAULT_CONFIG: Required<Omit<ClientConfig, 'apiKey' | 'cache'>> = {
   baseUrl: '',
   timeout: 30000,
   retryAttempts: 3,
@@ -41,12 +51,28 @@ export abstract class BaseClient {
   /** Base delay between retries */
   protected readonly retryDelay: number;
 
+  /** LRU cache instance (null if caching disabled) */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  protected readonly cache: LRUCache<string, any> | null;
+
   constructor(config: ClientConfig = {}) {
     this.apiKey = config.apiKey;
     this.baseUrl = config.baseUrl ?? this.getDefaultBaseUrl();
     this.timeout = config.timeout ?? DEFAULT_CONFIG.timeout;
     this.retryAttempts = config.retryAttempts ?? DEFAULT_CONFIG.retryAttempts;
     this.retryDelay = config.retryDelay ?? DEFAULT_CONFIG.retryDelay;
+
+    // Initialize cache if enabled
+    const cacheConfig = config.cache ?? {};
+    if (cacheConfig.enabled !== false) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.cache = new LRUCache<string, any>({
+        max: cacheConfig.maxSize ?? DEFAULT_CACHE_CONFIG.maxSize,
+        ttl: cacheConfig.ttl ?? DEFAULT_CACHE_CONFIG.ttl,
+      });
+    } else {
+      this.cache = null;
+    }
   }
 
   /**
@@ -164,5 +190,34 @@ export abstract class BaseClient {
 
     const queryString = searchParams.toString();
     return queryString ? `?${queryString}` : '';
+  }
+
+  /**
+   * Generate a cache key for a method call.
+   */
+  protected getCacheKey(method: string, params: string | Record<string, unknown>): string {
+    const paramsStr = typeof params === 'string' ? params : JSON.stringify(params);
+    return `${this.regulator}:${method}:${paramsStr}`;
+  }
+
+  /**
+   * Get a value from the cache.
+   */
+  protected getCached<T>(key: string): T | undefined {
+    return this.cache?.get(key) as T | undefined;
+  }
+
+  /**
+   * Set a value in the cache.
+   */
+  protected setCache<T>(key: string, value: T): void {
+    this.cache?.set(key, value);
+  }
+
+  /**
+   * Clear all cached entries.
+   */
+  public clearCache(): void {
+    this.cache?.clear();
   }
 }

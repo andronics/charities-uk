@@ -50,6 +50,18 @@ export interface AggregationBucket {
 }
 
 /**
+ * Cache configuration options.
+ */
+export interface CacheConfig {
+  /** Enable/disable caching (default: true) */
+  enabled?: boolean;
+  /** Time-to-live in milliseconds (default: 300000 = 5 minutes) */
+  ttl?: number;
+  /** Maximum number of cached entries (default: 100) */
+  maxSize?: number;
+}
+
+/**
  * Client configuration options.
  */
 export interface ClientConfig {
@@ -63,4 +75,6 @@ export interface ClientConfig {
   retryAttempts?: number;
   /** Base delay between retries in milliseconds */
   retryDelay?: number;
+  /** Cache configuration */
+  cache?: CacheConfig;
 }
