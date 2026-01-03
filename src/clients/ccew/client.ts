@@ -143,6 +143,13 @@ export class CCEWClient extends BaseClient {
     // Remove any non-numeric characters
     const regNumber = id.replace(/\D/g, '');
 
+    // Check cache first
+    const cacheKey = this.getCacheKey('getCharity', regNumber);
+    const cached = this.getCached<Charity | null>(cacheKey);
+    if (cached !== undefined) {
+      return cached;
+    }
+
     try {
       const queryString = this.buildQueryString({
         registeredCharityNumber: regNumber,
@@ -153,17 +160,22 @@ export class CCEWClient extends BaseClient {
       );
 
       if (!response.data || !response.data.registeredCharityNumber) {
+        this.setCache(cacheKey, null);
         return null;
       }
 
-      return transformDetails(response.data);
+      const result = transformDetails(response.data);
+      this.setCache(cacheKey, result);
+      return result;
     } catch (error) {
       if (error instanceof CharityNotFoundError) {
+        this.setCache(cacheKey, null);
         return null;
       }
       if (error instanceof AuthenticationError) {
         throw error;
       }
+      this.setCache(cacheKey, null);
       return null;
     }
   }

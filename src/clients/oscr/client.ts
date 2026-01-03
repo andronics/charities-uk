@@ -112,20 +112,31 @@ export class OSCRClient extends BaseClient {
     // Ensure SC prefix
     const charityNumber = id.toUpperCase().startsWith('SC') ? id.toUpperCase() : `SC${id}`;
 
+    // Check cache first
+    const cacheKey = this.getCacheKey('getCharity', charityNumber);
+    const cached = this.getCached<Charity | null>(cacheKey);
+    if (cached !== undefined) {
+      return cached;
+    }
+
     try {
       const queryString = this.buildQueryString({ charitynumber: charityNumber });
       const response = await this.get<OSCRAllCharitiesResponse>(`/all_charities${queryString}`);
 
       const firstCharity = response.data.data?.[0];
       if (!firstCharity) {
+        this.setCache(cacheKey, null);
         return null;
       }
 
-      return transformCharity(firstCharity);
+      const result = transformCharity(firstCharity);
+      this.setCache(cacheKey, result);
+      return result;
     } catch (error) {
       if (error instanceof AuthenticationError) {
         throw error;
       }
+      this.setCache(cacheKey, null);
       return null;
     }
   }

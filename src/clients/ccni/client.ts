@@ -114,6 +114,13 @@ export class CCNIClient extends BaseClient {
     // Strip NIC prefix if present
     const regId = id.replace(/^NIC/i, '');
 
+    // Check cache first
+    const cacheKey = this.getCacheKey('getCharity', regId);
+    const cached = this.getCached<Charity | null>(cacheKey);
+    if (cached !== undefined) {
+      return cached;
+    }
+
     try {
       const queryString = this.buildQueryString({
         regId,
@@ -124,12 +131,16 @@ export class CCNIClient extends BaseClient {
 
       // CCNI returns empty object for not found
       if (!response.data || !response.data.regCharityNumber) {
+        this.setCache(cacheKey, null);
         return null;
       }
 
-      return transformDetails(response.data);
+      const result = transformDetails(response.data);
+      this.setCache(cacheKey, result);
+      return result;
     } catch (error) {
       if (error instanceof CharityNotFoundError) {
+        this.setCache(cacheKey, null);
         return null;
       }
       throw error;
