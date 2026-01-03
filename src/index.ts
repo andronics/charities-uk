@@ -52,7 +52,7 @@ export type {
   CCEWFinancialYear,
 } from './types/index.js';
 
-// Clients will be exported here as they are implemented:
-// export { CCNIClient } from './clients/ccni/index.js';
+// Clients
+export { CCNIClient, type CCNISearchFilters } from './clients/ccni/index.js';
 // export { OSCRClient } from './clients/oscr/index.js';
 // export { CCEWClient } from './clients/ccew/index.js';

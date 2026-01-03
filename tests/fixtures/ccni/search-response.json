@@ -1,0 +1,72 @@
+{
+  "pageNumber": 1,
+  "pageSize": 15,
+  "totalPages": 2,
+  "totalItems": 25,
+  "pageItems": [
+    {
+      "regNo": "100002",
+      "subNo": "0",
+      "name": "Cancer Lifeline",
+      "orgType": "Up-to-date",
+      "url": "/charity-details/?regId=100002&subId=0",
+      "statusLabel": "Up-to-date",
+      "statusCssStyle": "success",
+      "hideStatus": false
+    },
+    {
+      "regNo": "100015",
+      "subNo": "0",
+      "name": "Cancer Research NI",
+      "orgType": "Up-to-date",
+      "url": "/charity-details/?regId=100015&subId=0",
+      "statusLabel": "Up-to-date",
+      "statusCssStyle": "success",
+      "hideStatus": false
+    }
+  ],
+  "aggregationGroups": [
+    {
+      "name": "income",
+      "displayName": "Income",
+      "buckets": [
+        {
+          "key": "Under £10K",
+          "displayName": "Under £10K",
+          "count": 5,
+          "isSelected": false
+        },
+        {
+          "key": "Between £10K and £100K",
+          "displayName": "Between £10K and £100K",
+          "count": 10,
+          "isSelected": false
+        },
+        {
+          "key": "Between £100K and £1M",
+          "displayName": "Between £100K and £1M",
+          "count": 8,
+          "isSelected": false
+        }
+      ]
+    }
+  ],
+  "onlyShow": {
+    "name": "status",
+    "displayName": "Status",
+    "buckets": [
+      {
+        "key": "Up-to-date",
+        "displayName": "Up-to-date",
+        "count": 20,
+        "isSelected": false
+      },
+      {
+        "key": "In default",
+        "displayName": "In default",
+        "count": 5,
+        "isSelected": false
+      }
+    ]
+  }
+}

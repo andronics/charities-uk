@@ -1,0 +1,92 @@
+{
+  "regCharityNumber": 100002,
+  "subCharityNumber": "0",
+  "charityName": "Cancer Lifeline",
+  "mainCharityName": "Cancer Lifeline",
+  "otherNames": ["Lifeline for Cancer"],
+  "companyNumber": "0",
+  "organisationType": "Charitable company (Ltd by guarantee, no share capital)",
+  "charityType": null,
+  "status": "Up-to-date",
+  "additionalStatus": null,
+  "hideStatus": false,
+  "daysOverdue": null,
+  "dateRegistered": "2010-06-15T00:00:00",
+  "dateRemoved": null,
+  "inAdministration": 0,
+  "insolvent": 0,
+  "contactAddress": "123 Main Street, Belfast BT1 1AA",
+  "csvContactAddress": "123 Main Street, Belfast, BT1 1AA",
+  "contactEmail": "info@cancerlifeline.org",
+  "contactTel": "028 1234 5678",
+  "contactWebsite": "https://www.cancerlifeline.org",
+  "income": 150000,
+  "incTotal": "150000",
+  "expTotal": "120000",
+  "dateFinancialYearStart": "2023-01-01T00:00:00",
+  "dateFinancialYearEnd": "2023-12-31T00:00:00",
+  "incVoluntary": 100000,
+  "incTradingRaiseFunds": 30000,
+  "incInvestment": 5000,
+  "incCharitableActivities": 15000,
+  "incOther": 0,
+  "totalIncomeEndowments": 0,
+  "expGeneratingVoluntaryIncome": 10000,
+  "expTradingRaiseFunds": 5000,
+  "expInvestmentManagement": 1000,
+  "expCharitableActivities": 100000,
+  "expGovernance": 4000,
+  "expOther": 0,
+  "totalExpenditure": 120000,
+  "longTermInvestments": "0",
+  "ownUseAssets": "50000",
+  "otherAssets": "10000",
+  "totalLiabilities": "5000",
+  "numberEmployees": 5,
+  "numberVolunteers": 20,
+  "peopleTrustees": 7,
+  "trusteesList": [
+    {
+      "id": 1,
+      "name": "John Smith",
+      "isChair": true,
+      "charityNumbersOfOtherTrusteeships": [100003, 100004]
+    },
+    {
+      "id": 2,
+      "name": "Jane Doe",
+      "isChair": false,
+      "charityNumbersOfOtherTrusteeships": []
+    }
+  ],
+  "classWhat": ["The advancement of health or the saving of lives"],
+  "classWho": ["People with a particular illness or condition"],
+  "classHow": ["Provides services", "Provides advocacy/advice/information"],
+  "areasOfOperation": ["Northern Ireland"],
+  "areasOperationList": [
+    { "type": "region", "name": "Northern Ireland" }
+  ],
+  "countryCode": ["NI"],
+  "charitableObjects": "To provide support and services to people affected by cancer in Northern Ireland.",
+  "activities": "We provide counselling, support groups, and practical assistance to cancer patients and their families.",
+  "publicBenefits": "Our services are available free of charge to anyone affected by cancer in Northern Ireland.",
+  "areaBenefit": "Northern Ireland",
+  "governingDocument": {
+    "url": "https://example.com/governing-doc.pdf",
+    "name": "Memorandum and Articles of Association"
+  },
+  "dsSubmittedDocumentsByYear": [
+    {
+      "financialYear": "2023",
+      "documents": [
+        {
+          "url": "https://example.com/accounts-2023.pdf",
+          "name": "Annual Accounts 2023",
+          "qualifiedAccounts": false
+        }
+      ]
+    }
+  ],
+  "linkedCharities": [],
+  "parentCharity": null
+}
