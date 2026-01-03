@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/andronics/charities-uk/compare/v1.0.0...v1.0.1) (2026-01-03)
+
+
+### Bug Fixes
+
+* Set publishConfig access to public for scoped package ([de4fd50](https://github.com/andronics/charities-uk/commit/de4fd500dc3713423db324982700f2c609ec690f))
+
 # 1.0.0 (2026-01-03)
 
 
