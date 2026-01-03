@@ -1,0 +1,40 @@
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "charityName": "Stoneyburn Community Education Centre",
+  "charityNumber": "SC000001",
+  "registeredDate": "1992-01-15T00:00:00",
+  "knownAs": "Stoneyburn CEC",
+  "website": "https://www.stoneyburncentre.org.uk",
+  "parentCharityName": null,
+  "parentCharityNumber": null,
+  "parentCharityCountryOfRegistration": null,
+  "designatedReligiousBody": false,
+  "charityStatus": "Active",
+  "currentConstitutionalForm": "SCIO (Scottish Charitable Incorporated Organisation)",
+  "notes": "Community education centre serving the Stoneyburn area.",
+  "geographicalSpread": "West Lothian",
+  "mainOperatingLocation": "Stoneyburn",
+  "purposes": [
+    "The advancement of education",
+    "The advancement of community development"
+  ],
+  "beneficiaries": [
+    "Children/young people",
+    "Older people"
+  ],
+  "typesOfActivities": [
+    "Provides services",
+    "Provides buildings/facilities/open space"
+  ],
+  "objectives": "To provide educational and recreational facilities for the community of Stoneyburn and surrounding areas.",
+  "regulatoryType": null,
+  "charityType": null,
+  "postcode": "EH47 8BN",
+  "principalOfficeOrTrusteeAddress": "Main Street, Stoneyburn, West Lothian, EH47 8BN",
+  "principalContactAddress": "Main Street, Stoneyburn, West Lothian, EH47 8BN",
+  "mostRecentYearIncome": 85000,
+  "mostRecentYearExpenditure": 78000,
+  "nextYearEndDate": "2024-12-31T00:00:00",
+  "mailingCycle": "December",
+  "yearEnd": "2023-12-31T00:00:00"
+}

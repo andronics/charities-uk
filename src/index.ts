@@ -54,5 +54,5 @@ export type {
 
 // Clients
 export { CCNIClient, type CCNISearchFilters } from './clients/ccni/index.js';
-// export { OSCRClient } from './clients/oscr/index.js';
+export { OSCRClient } from './clients/oscr/index.js';
 // export { CCEWClient } from './clients/ccew/index.js';

@@ -1,0 +1,42 @@
+[
+  {
+    "UniqueReference": "AR-2023-001",
+    "CharityNumber": "SC000001",
+    "AccountingReferenceDate": "2023-12-31T00:00:00",
+    "GrossIncome": 85000,
+    "GrossExpenditure": 78000,
+    "ReceivedDate": "2024-03-15T00:00:00",
+    "DonationsAndLegaciesIncome": 50000,
+    "CharitableActivitiesIncome": 30000,
+    "OtherTradingActivitiesIncome": 3000,
+    "InvestmentsIncome": 2000,
+    "OtherIncome": 0,
+    "RaisingFundsSpending": 5000,
+    "CharitableActivitiesExpenditure": 70000,
+    "OtherExpenditure": 3000,
+    "TotalNumberofCharityTrustees": 8,
+    "PaidStaff": 3,
+    "CharityProvidedLinkToAccount": true,
+    "LinkToCharityAccount": "https://example.com/accounts-2023.pdf"
+  },
+  {
+    "UniqueReference": "AR-2022-001",
+    "CharityNumber": "SC000001",
+    "AccountingReferenceDate": "2022-12-31T00:00:00",
+    "GrossIncome": 75000,
+    "GrossExpenditure": 70000,
+    "ReceivedDate": "2023-03-10T00:00:00",
+    "DonationsAndLegaciesIncome": 45000,
+    "CharitableActivitiesIncome": 25000,
+    "OtherTradingActivitiesIncome": 3000,
+    "InvestmentsIncome": 2000,
+    "OtherIncome": 0,
+    "RaisingFundsSpending": 4000,
+    "CharitableActivitiesExpenditure": 63000,
+    "OtherExpenditure": 3000,
+    "TotalNumberofCharityTrustees": 7,
+    "PaidStaff": 2,
+    "CharityProvidedLinkToAccount": true,
+    "LinkToCharityAccount": "https://example.com/accounts-2022.pdf"
+  }
+]
