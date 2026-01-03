@@ -7,3 +7,6 @@ export {
   NetworkError,
   ApiError,
 } from './errors.js';
+
+// Base client
+export { BaseClient } from './base-client.js';

@@ -1,0 +1,168 @@
+import { httpRequest, type HttpRequestOptions, type HttpResponse } from '../utils/http.js';
+import type { Charity, Regulator } from '../types/charity.js';
+import type { SearchQuery, SearchResult, ClientConfig } from '../types/search.js';
+import {
+  CharityNotFoundError,
+  RateLimitError,
+  AuthenticationError,
+  ApiError,
+} from './errors.js';
+
+/**
+ * Default client configuration.
+ */
+const DEFAULT_CONFIG: Required<Omit<ClientConfig, 'apiKey'>> = {
+  baseUrl: '',
+  timeout: 30000,
+  retryAttempts: 3,
+  retryDelay: 1000,
+};
+
+/**
+ * Abstract base client for charity regulator APIs.
+ * Provides shared HTTP handling, retry logic, and error mapping.
+ */
+export abstract class BaseClient {
+  /** Regulator identifier */
+  abstract readonly regulator: Regulator;
+
+  /** Base URL for API requests */
+  protected readonly baseUrl: string;
+
+  /** Optional API key for authentication */
+  protected readonly apiKey?: string;
+
+  /** Request timeout in milliseconds */
+  protected readonly timeout: number;
+
+  /** Number of retry attempts */
+  protected readonly retryAttempts: number;
+
+  /** Base delay between retries */
+  protected readonly retryDelay: number;
+
+  constructor(config: ClientConfig = {}) {
+    this.apiKey = config.apiKey;
+    this.baseUrl = config.baseUrl ?? this.getDefaultBaseUrl();
+    this.timeout = config.timeout ?? DEFAULT_CONFIG.timeout;
+    this.retryAttempts = config.retryAttempts ?? DEFAULT_CONFIG.retryAttempts;
+    this.retryDelay = config.retryDelay ?? DEFAULT_CONFIG.retryDelay;
+  }
+
+  /**
+   * Get the default base URL for this regulator's API.
+   */
+  protected abstract getDefaultBaseUrl(): string;
+
+  /**
+   * Get authentication headers for this regulator.
+   * Returns empty object if no auth required.
+   */
+  protected abstract getAuthHeaders(): Record<string, string>;
+
+  /**
+   * Search for charities.
+   */
+  abstract search(query: SearchQuery): Promise<SearchResult<Charity>>;
+
+  /**
+   * Get a single charity by ID.
+   * Returns null if not found.
+   */
+  abstract getCharity(id: string): Promise<Charity | null>;
+
+  /**
+   * Make an HTTP request with retry and error handling.
+   */
+  protected async request<T>(
+    endpoint: string,
+    options: Omit<HttpRequestOptions, 'timeout' | 'retry'> = {}
+  ): Promise<HttpResponse<T>> {
+    const url = `${this.baseUrl}${endpoint}`;
+
+    const response = await httpRequest<T>(url, {
+      ...options,
+      headers: {
+        Accept: 'application/json',
+        ...this.getAuthHeaders(),
+        ...options.headers,
+      },
+      timeout: this.timeout,
+      retry: {
+        maxRetries: this.retryAttempts,
+        delayMs: this.retryDelay,
+      },
+    });
+
+    // Handle error responses
+    if (!response.ok) {
+      this.handleErrorResponse(response);
+    }
+
+    return response;
+  }
+
+  /**
+   * Make a GET request.
+   */
+  protected get<T>(
+    endpoint: string,
+    options: Omit<HttpRequestOptions, 'method' | 'body' | 'timeout' | 'retry'> = {}
+  ): Promise<HttpResponse<T>> {
+    return this.request<T>(endpoint, { ...options, method: 'GET' });
+  }
+
+  /**
+   * Make a POST request.
+   */
+  protected post<T>(
+    endpoint: string,
+    body: unknown,
+    options: Omit<HttpRequestOptions, 'method' | 'body' | 'timeout' | 'retry'> = {}
+  ): Promise<HttpResponse<T>> {
+    return this.request<T>(endpoint, {
+      ...options,
+      method: 'POST',
+      body: body as string | object,
+    });
+  }
+
+  /**
+   * Handle non-2xx HTTP responses by throwing appropriate errors.
+   */
+  protected handleErrorResponse(response: HttpResponse<unknown>): never {
+    const fakeResponse = {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+    } as Response;
+
+    switch (response.status) {
+      case 401:
+      case 403:
+        throw new AuthenticationError(fakeResponse);
+      case 404:
+        throw new CharityNotFoundError();
+      case 429:
+        throw new RateLimitError(fakeResponse);
+      default:
+        throw new ApiError(fakeResponse, response.raw);
+    }
+  }
+
+  /**
+   * Build a query string from parameters.
+   */
+  protected buildQueryString(params: Record<string, string | number | boolean | undefined>): string {
+    const searchParams = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value !== undefined && value !== null && value !== '') {
+        searchParams.append(key, String(value));
+      }
+    }
+
+    const queryString = searchParams.toString();
+    return queryString ? `?${queryString}` : '';
+  }
+}

@@ -5,7 +5,7 @@ import {
   httpPost,
   DEFAULT_RETRY_CONFIG,
 } from '../../../src/utils/http.js';
-import { CCNIError } from '../../../src/errors/ccni-error.js';
+import { NetworkError } from '../../../src/core/errors.js';
 
 // Mock fetch globally
 const mockFetch = vi.fn();
@@ -315,7 +315,7 @@ describe('http utilities', () => {
       expect(response.status).toBe(200);
     });
 
-    it('throws CCNIError after all retries fail', async () => {
+    it('throws NetworkError after all retries fail', async () => {
       mockFetch.mockRejectedValue(new TypeError('Network error'));
 
       const promise = httpRequest('https://example.com', {
@@ -331,8 +331,8 @@ describe('http utilities', () => {
       await vi.runAllTimersAsync();
       await errorPromise;
 
-      expect(caughtError).toBeInstanceOf(CCNIError);
-      expect(caughtError?.message).toMatch(/HTTP request failed after 3 attempt/);
+      expect(caughtError).toBeInstanceOf(NetworkError);
+      expect(caughtError?.message).toMatch(/Network error/);
     });
 
     it('returns raw response text', async () => {

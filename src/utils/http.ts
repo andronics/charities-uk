@@ -1,4 +1,4 @@
-import { CCNIError } from '../errors/index.js';
+import { NetworkError } from '../core/errors.js';
 
 /**
  * Retry configuration options.
@@ -177,16 +177,12 @@ export async function httpRequest<T = unknown>(
       }
 
       // Non-retryable error or max retries exceeded
-      // fix: throw appropriate error type based on client type
-      throw new CCNIError(
-        `HTTP request failed after ${attempt + 1} attempt(s): ${lastError.message}`
-      );
+      throw new NetworkError(lastError);
     }
   }
 
   // Should not reach here, but just in case
-  // fix: throw appropriate error type based on client type
-  throw lastError ?? new CCNIError('HTTP request failed');
+  throw new NetworkError(lastError ?? new Error('HTTP request failed'));
 }
 
 /**
