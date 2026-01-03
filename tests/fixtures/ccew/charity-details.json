@@ -1,0 +1,84 @@
+{
+  "registeredCharityNumber": 1234567,
+  "linkedCharityNumber": 0,
+  "charityName": "Example Charity Foundation",
+  "charityRegistrationStatus": "Registered",
+  "dateOfRegistration": "2005-03-15T00:00:00",
+  "dateOfRemoval": null,
+  "charityContactWeb": "https://www.examplecharity.org.uk",
+  "charityContactEmail": "info@examplecharity.org.uk",
+  "charityContactPhone": "020 1234 5678",
+  "charityContactAddress1": "123 High Street",
+  "charityContactAddress2": "Westminster",
+  "charityContactAddress3": "London",
+  "charityContactAddress4": null,
+  "charityContactAddress5": null,
+  "charityContactPostcode": "SW1A 1AA",
+  "organisationType": "Charitable Incorporated Organisation",
+  "charityCompanyRegistrationNumber": "12345678",
+  "charityInsolvent": false,
+  "charityInAdministration": false,
+  "charityType": "CIO",
+  "latestIncome": 500000,
+  "latestExpenditure": 450000,
+  "latestFinancialYearEnd": "2023-03-31T00:00:00",
+  "numberOfEmployees": 15,
+  "numberOfVolunteers": 50,
+  "numberOfTrustees": 10,
+  "charityWhoWhat": {
+    "whatTheCharityDoes": [
+      "General charitable purposes",
+      "Education/training"
+    ],
+    "howTheCharityWorks": [
+      "Makes grants to organisations",
+      "Provides services"
+    ],
+    "whoTheCharityHelps": [
+      "Children/young people",
+      "Elderly/old people"
+    ]
+  },
+  "charityAreasOfOperation": {
+    "localAuthorities": ["Westminster", "Camden"],
+    "countries": ["England"],
+    "regions": ["London"]
+  },
+  "otherNames": [
+    {
+      "charityOtherName": "ECF",
+      "charityOtherNameType": "Working Name"
+    }
+  ],
+  "charitableObjects": "To advance education and relieve poverty in the Greater London area.",
+  "governingDocument": "Charitable Incorporated Organisation Constitution",
+  "trustees": [
+    {
+      "trusteeName": "Dr. Sarah Johnson",
+      "trusteeIsChair": true,
+      "trusteeReportingStatus": "Active",
+      "trusteeApptDate": "2015-01-01T00:00:00",
+      "trusteeCessDate": null
+    },
+    {
+      "trusteeName": "Mr. James Wilson",
+      "trusteeIsChair": false,
+      "trusteeReportingStatus": "Active",
+      "trusteeApptDate": "2018-06-15T00:00:00",
+      "trusteeCessDate": null
+    }
+  ],
+  "financialHistory": [
+    {
+      "financialYearEnd": "2023-03-31T00:00:00",
+      "income": 500000,
+      "expenditure": 450000
+    },
+    {
+      "financialYearEnd": "2022-03-31T00:00:00",
+      "income": 480000,
+      "expenditure": 420000
+    }
+  ],
+  "otherRegulators": []
+}

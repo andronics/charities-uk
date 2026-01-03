@@ -1,0 +1,25 @@
+{
+  "charities": [
+    {
+      "registeredCharityNumber": 1234567,
+      "linkedCharityNumber": 0,
+      "charityName": "Example Charity Foundation",
+      "charityType": "CIO",
+      "registrationStatus": "Registered",
+      "dateOfRegistration": "2005-03-15T00:00:00",
+      "dateOfRemoval": null
+    },
+    {
+      "registeredCharityNumber": 7654321,
+      "linkedCharityNumber": 0,
+      "charityName": "Another Example Trust",
+      "charityType": "Trust",
+      "registrationStatus": "Registered",
+      "dateOfRegistration": "2010-08-20T00:00:00",
+      "dateOfRemoval": null
+    }
+  ],
+  "totalResults": 25,
+  "pageNumber": 1,
+  "pageSize": 20
+}
