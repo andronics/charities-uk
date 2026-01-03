@@ -105,23 +105,48 @@ interface ClientConfig {
   apiKey?: string;
   /** Custom base URL (optional) */
   baseUrl?: string;
-  /** Retry configuration */
-  retry?: {
-    maxRetries?: number;  // Default: 3
-    delayMs?: number;     // Default: 1000
+  /** Request timeout in milliseconds */
+  timeout?: number;           // Default: 30000
+  /** Number of retry attempts */
+  retryAttempts?: number;     // Default: 3
+  /** Base delay between retries */
+  retryDelay?: number;        // Default: 1000
+  /** Cache configuration */
+  cache?: {
+    enabled?: boolean;        // Default: true
+    ttl?: number;             // Default: 300000 (5 minutes)
+    maxSize?: number;         // Default: 100 entries
   };
 }
 ```
 
-### Example with retry configuration
+### Example with caching configuration
 
 ```typescript
 const ccew = new CCEWClient({
   apiKey: process.env.CCEW_API_KEY,
-  retry: {
-    maxRetries: 5,
-    delayMs: 2000,
+  cache: {
+    enabled: true,
+    ttl: 10 * 60 * 1000,  // 10 minutes
+    maxSize: 200,
   },
+});
+
+// First call hits API
+const charity = await ccew.getCharity('1234567');
+
+// Second call served from cache
+const trustees = await ccew.getTrustees('1234567');
+
+// Clear cache when needed
+ccew.clearCache();
+```
+
+### Disable caching
+
+```typescript
+const ccni = new CCNIClient({
+  cache: { enabled: false },
 });
 ```
 
@@ -209,37 +234,44 @@ try {
 
 Note: `getCharity()` returns `null` for not found instead of throwing.
 
-## Client Methods
+## Unified Interface
 
-### CCNIClient
-
-| Method | Description |
-|--------|-------------|
-| `search(query)` | Search charities with filters |
-| `getCharity(id)` | Get charity by registration number |
-| `getCharityWithSubsidiary(regId, subId)` | Get subsidiary charity |
-| `getTrustees(id)` | Get trustees for a charity |
-
-### OSCRClient
+All clients implement the same method signatures for consistent usage across regulators:
 
 | Method | Description |
 |--------|-------------|
-| `search(query)` | Get all charities (paginated) |
-| `getCharity(id)` | Get charity by SC number |
-| `getCharityWithFinancials(id)` | Get charity with annual return data |
-| `getAnnualReturns(id)` | Get financial years |
-
-### CCEWClient
-
-| Method | Description |
-|--------|-------------|
-| `search(query)` | Search by keyword |
-| `searchByName(name)` | Search by charity name |
-| `getCharity(id)` | Get charity by registration number |
-| `getCharityWithLinked(regId, linkedId)` | Get linked charity |
+| `search(query)` | Search charities |
+| `searchByName(name, page?)` | Search by charity name |
+| `getCharity(id)` | Get charity details |
 | `getTrustees(id)` | Get trustees |
-| `getFinancialHistory(id)` | Get up to 5 years of financials |
-| `getOtherRegulators(id)` | Check cross-registration |
+| `getFinancialHistory(id)` | Get financial years |
+| `getOtherRegulators(id)` | Get cross-regulator registrations |
+| `clearCache()` | Clear cached responses |
+
+### Feature Availability
+
+Not all regulators support all features. Unsupported methods return empty results and log a warning.
+
+| Method | CCEW | OSCR | CCNI |
+|--------|:----:|:----:|:----:|
+| `search()` | ✓ | ✓ Pagination only | ✓ |
+| `searchByName()` | ✓ | ⚠️ Not supported | ✓ |
+| `getCharity()` | ✓ | ✓ | ✓ |
+| `getTrustees()` | ✓ | ⚠️ Not supported | ✓ |
+| `getFinancialHistory()` | ✓ Multi-year | ✓ Via annual returns | ⚠️ Current year only |
+| `getOtherRegulators()` | ✓ | ⚠️ Not supported | ⚠️ Not supported |
+
+### Additional Client-Specific Methods
+
+**CCNIClient:**
+- `getCharityWithSubsidiary(regId, subId)` - Get subsidiary charity
+
+**OSCRClient:**
+- `getCharityWithFinancials(id)` - Get charity enriched with annual return data
+- `getAnnualReturns(id)` - Get raw annual returns
+
+**CCEWClient:**
+- `getCharityWithLinked(regId, linkedId)` - Get linked charity
 
 ## Environment Variables
 
