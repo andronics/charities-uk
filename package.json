@@ -1,0 +1,69 @@
+{
+  "name": "@andronics/charities-uk",
+  "version": "0.0.0-development",
+  "description": "TypeScript clients for UK Charity Commission APIs (CCEW, OSCR, CCNI)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "charity",
+    "uk",
+    "ccni",
+    "oscr",
+    "ccew",
+    "charity-commission",
+    "northern-ireland",
+    "scotland",
+    "england-wales",
+    "api-client",
+    "typescript"
+  ],
+  "author": "andronics",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andronics/charities-uk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andronics/charities-uk/issues"
+  },
+  "homepage": "https://github.com/andronics/charities-uk#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.0.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@eslint/js": "^9.0.0",
+    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/git": "^10.0.0",
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "eslint": "^9.0.0",
+    "husky": "^9.0.0",
+    "semantic-release": "^24.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^2.0.0"
+  }
+}
