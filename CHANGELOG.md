@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/andronics/charities-uk/compare/v1.0.1...v1.0.2) (2026-01-03)
+
+
+### Bug Fixes
+
+* Add default export condition for module resolution compatibility ([6a45efd](https://github.com/andronics/charities-uk/commit/6a45efd22780d3892918a7499588609f05118baf))
+
 ## [1.0.1](https://github.com/andronics/charities-uk/compare/v1.0.0...v1.0.1) (2026-01-03)
 
 
